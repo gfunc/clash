@@ -10,6 +10,7 @@ const (
 	SrcIPCIDR
 	SrcPort
 	DstPort
+	Header
 	Process
 	ProcessPath
 	MATCH
@@ -35,6 +36,8 @@ func (rt RuleType) String() string {
 		return "SrcPort"
 	case DstPort:
 		return "DstPort"
+	case Header:
+		return "Header"
 	case Process:
 		return "Process"
 	case ProcessPath:

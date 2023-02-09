@@ -3,16 +3,22 @@ package http
 import (
 	"encoding/base64"
 	"errors"
+	"github.com/Dreamacro/clash/constant"
 	"net"
 	"net/http"
 	"strings"
 )
 
-// removeHopByHopHeaders remove Proxy-* headers
+// removeProxyHeaders remove Proxy-* headers
 func removeProxyHeaders(header http.Header) {
 	header.Del("Proxy-Connection")
 	header.Del("Proxy-Authenticate")
 	header.Del("Proxy-Authorization")
+}
+
+// removeClashHeaders remove Clash header(s)
+func removeClashHeaders(header http.Header) {
+	header.Del(constant.ClashHeader)
 }
 
 // removeHopByHopHeaders remove hop-by-hop header

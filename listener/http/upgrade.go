@@ -27,6 +27,7 @@ func handleUpgrade(conn net.Conn, request *http.Request, in chan<- C.ConnContext
 	defer conn.Close()
 
 	removeProxyHeaders(request.Header)
+	removeClashHeaders(request.Header)
 	removeExtraHTTPHostPort(request)
 
 	address := request.Host
@@ -57,6 +58,7 @@ func handleUpgrade(conn net.Conn, request *http.Request, in chan<- C.ConnContext
 	}
 
 	removeProxyHeaders(resp.Header)
+	removeClashHeaders(request.Header)
 
 	err = resp.Write(conn)
 	if err != nil {

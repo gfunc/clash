@@ -67,6 +67,7 @@ func HandleConn(c net.Conn, in chan<- C.ConnContext, cache *cache.LruCache) {
 			}
 
 			removeHopByHopHeaders(request.Header)
+			removeClashHeaders(request.Header)
 			removeExtraHTTPHostPort(request)
 
 			if request.URL.Scheme == "" || request.URL.Host == "" {

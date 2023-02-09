@@ -41,11 +41,14 @@ func parseHTTPAddr(request *http.Request) *C.Metadata {
 	// trim FQDN (#737)
 	host = strings.TrimRight(host, ".")
 
+	headerValue := request.Header.Get(C.ClashHeader)
+
 	metadata := &C.Metadata{
-		NetWork: C.TCP,
-		Host:    host,
-		DstIP:   nil,
-		DstPort: port,
+		NetWork:     C.TCP,
+		Host:        host,
+		DstIP:       nil,
+		DstPort:     port,
+		ClashHeader: headerValue,
 	}
 
 	if ip := net.ParseIP(host); ip != nil {
