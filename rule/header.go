@@ -16,7 +16,7 @@ func (d *Header) RuleType() C.RuleType {
 }
 
 func (d *Header) Match(metadata *C.Metadata) bool {
-	return strings.ToLower(metadata.ClashHeader) == d.value
+	return d.value != "" && strings.ToLower(metadata.ClashHeader) == d.value
 }
 
 func (d *Header) Adapter() string {

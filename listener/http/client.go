@@ -12,8 +12,18 @@ import (
 	"github.com/Dreamacro/clash/transport/socks5"
 )
 
-func newClient(source net.Addr, in chan<- C.ConnContext) *http.Client {
-	return &http.Client{
+type client struct {
+	*http.Client
+	ClashHeaderValue string
+}
+
+func (c *client) setClashHeader(value string) {
+	c.ClashHeaderValue = value
+}
+
+func newClient(source net.Addr, in chan<- C.ConnContext) *client {
+	c := client{}
+	c.Client = &http.Client{
 		Transport: &http.Transport{
 			// from http.DefaultTransport
 			MaxIdleConns:          100,
@@ -32,7 +42,7 @@ func newClient(source net.Addr, in chan<- C.ConnContext) *http.Client {
 
 				left, right := net.Pipe()
 
-				in <- inbound.NewHTTP(dstAddr, source, right)
+				in <- inbound.NewHTTP(dstAddr, source, right, c.ClashHeaderValue)
 
 				return left, nil
 			},
@@ -41,4 +51,5 @@ func newClient(source net.Addr, in chan<- C.ConnContext) *http.Client {
 			return http.ErrUseLastResponse
 		},
 	}
+	return &c
 }

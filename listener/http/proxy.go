@@ -28,7 +28,8 @@ func HandleConn(c net.Conn, in chan<- C.ConnContext, cache *cache.LruCache) {
 		if err != nil {
 			break
 		}
-
+		headerValue := request.Header.Get(C.ClashHeader)
+		client.setClashHeader(headerValue)
 		request.RemoteAddr = conn.RemoteAddr().String()
 
 		keepAlive = strings.TrimSpace(strings.ToLower(request.Header.Get("Proxy-Connection"))) == "keep-alive"
@@ -61,7 +62,7 @@ func HandleConn(c net.Conn, in chan<- C.ConnContext, cache *cache.LruCache) {
 			request.RequestURI = ""
 
 			if isUpgradeRequest(request) {
-				handleUpgrade(conn, request, in)
+				handleUpgrade(conn, request, in, headerValue)
 
 				return // hijack connection
 			}
