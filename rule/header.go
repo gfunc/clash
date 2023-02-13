@@ -12,7 +12,7 @@ type Header struct {
 }
 
 func (d *Header) RuleType() C.RuleType {
-	return C.Domain
+	return C.Header
 }
 
 func (d *Header) Match(metadata *C.Metadata) bool {
